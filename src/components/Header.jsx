@@ -6,7 +6,7 @@ import Image from "next/image";
 
 const Header = ({ user }) => {
   return (
-    <nav className="bg-transparent w-full z-30 h-16 flex  text-gray-950 items-center justify-between p-8 top-0 fixed">
+    <nav className="bg-transparent w-full z-30 h-16 flex  text-white items-center justify-between p-8 top-0 fixed">
       <div>Atnox.</div>
       <div>
       {user && (

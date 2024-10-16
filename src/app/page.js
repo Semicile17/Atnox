@@ -4,52 +4,74 @@ import {
   SignInButton,
   SignedIn,
   SignedOut,
-  UserButton,
   useUser,
 } from "@clerk/nextjs";
 import "./globals.css";
 import Header from "../components/Header";
-import { BackgroundLines } from "@/components/ui/background-lines";
-import { useRouter } from "next/navigation";
-
+import { useRouter, usePathname } from "next/navigation";
+import React, { useEffect } from "react";
+import { SparklesCore } from "@/components/ui/sparkles";
 
 export default function RootLayout() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
+  const pathname = usePathname();
 
-  // Immediate redirection if the user is already signed in
-  if (isLoaded && user) {
-    console.log(user)
-    router.replace("/dashboard");
-    return null; // Prevent the component from rendering until the redirection happens
-  }
+  // Redirect user to '/home' if they are logged in and not already on '/home'
+  useEffect(() => {
+    if (isLoaded && user && pathname === "/") {
+      router.replace("/home");
+    }
+  }, [isLoaded, user, pathname, router]);
 
   return (
     <html lang="en">
-      <body>
-        <Header user={user}/>
-        <BackgroundLines className="flex items-center justify-center w-full h-screen flex-col px-4">
-          <h2 className="bg-clip-text text-transparent text-center bg-gradient-to-b from-neutral-900 to-neutral-700 dark:from-neutral-600 dark:to-white text-2xl md:text-4xl lg:text-7xl font-sans py-2 md:py-10 relative z-20 font-bold tracking-tight">
-            Atnox Digital, <br /> Atnox Finance.
-          </h2>
-          <p className="max-w-xl mx-auto text-sm md:text-lg text-neutral-700 dark:text-neutral-400 text-center">
-            Get the best advices from our experts, including expert designers,
-            finance managers, data analysts and RDX, totally free.
-          </p>
+      <body className="bg-black">
+        <Header user={user} />
+        <div className="h-full w-full bg-black flex flex-col items-center justify-start overflow-hidden mt-16">
+          <h1 className="md:text-7xl mt-24 text-5xl lg:text-9xl font-bold text-center text-white relative z-20">
+            CODE-X
+          </h1>
+          <div className="text-white flex">
+            <span className="flex items-center">
+              <hr className="text-white md:w-52 w-32" />
+            </span>
+            <span className="md:ml-4 ml-2">GBPIET</span>
+          </div>
+          <h1 className="text-white font-mono">Join Us . Be Amazed</h1>
+          <div className="w-[40rem] h-40 relative mt-4 ">
+            {/* Gradients */}
+            <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-green-500 to-transparent h-[2px] w-3/4 blur-sm" />
+            <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-green-500 to-transparent h-px w-3/4" />
+            <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-green-400 to-transparent h-[5px] w-1/4 blur-sm" />
+            <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-green-700 to-transparent h-px w-1/4" />
+
+            {/* Core component */}
+            <SparklesCore
+              background="transparent"
+              minSize={0.5}
+              maxSize={1}
+              particleDensity={2000}
+              className="w-full h-full"
+              particleColor="#008000"
+            />
+
+            {/* Radial Gradient to prevent sharp edges */}
+            <div className="absolute inset-0 w-full h-full bg-black [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
+          </div>
+
+          {/* Get Started Button */}
           <SignedOut>
             <SignInButton>
               <button
-                className="p-2 m-5 z-40 bg-gray-600 text-white rounded text-md hover:bg-black focus:ring"
+                className="p-2 mt-8 z-40 bg-gray-600  text-white rounded text-md hover:bg-green-400  hover:text-black  duration-800 focus:ring"
                 style={{ pointerEvents: "auto" }}
               >
-                Get Started
+                Get Started 
               </button>
             </SignInButton>
           </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-        </BackgroundLines>
+        </div>
       </body>
     </html>
   );
